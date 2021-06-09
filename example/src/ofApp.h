@@ -12,7 +12,7 @@
 class ofApp : public ofBaseApp{
 private:
 	enum{
-		NUM_SQUARES = 6,
+		NUM_SQUARES = 9,
 	};
 	enum{
 		SQUARE_W = 100,
@@ -20,8 +20,9 @@ private:
 	};
 	
 	ofx__VBO_SET VboSet;
+	int draw_id = 0;
 	
-	void Set_vboVerts();
+	void Refresh_vboVerts();
 	void Refresh_vboColor();
 	
 public:
