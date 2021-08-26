@@ -38,18 +38,16 @@ void ofx__VBO_SET::setup(int size, ofImage& tex_img){
 }
 
 /******************************
-座標の指定順に注意
-1--2
-|  |
-0--3
+座標軸
+	texture image上で、左上原点, 右に+x, 下に+y.
 ******************************/
 void ofx__VBO_SET::setup_StaticTexture(ofImage& img){
 	VboTexCoords.resize(4);
 	
-	VboTexCoords[0] = glm::vec2(0, 0);
-	VboTexCoords[1] = glm::vec2(0, img.getHeight());
-	VboTexCoords[2] = glm::vec2(img.getWidth(), img.getHeight());
-	VboTexCoords[3] = glm::vec2(img.getWidth(), 0);
+	VboTexCoords[0] = glm::vec2(0, img.getHeight());
+	VboTexCoords[1] = glm::vec2(0, 0);
+	VboTexCoords[2] = glm::vec2(img.getWidth(), 0);
+	VboTexCoords[3] = glm::vec2(img.getWidth(), img.getHeight());
 	
 	Vbo.setTexCoordData(&VboTexCoords[0], VboTexCoords.size(), GL_STATIC_DRAW);
 	Vbo.updateTexCoordData(&VboTexCoords[0], VboTexCoords.size());

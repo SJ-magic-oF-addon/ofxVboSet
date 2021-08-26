@@ -45,10 +45,10 @@ void ofApp::Refresh_vboVerts()
 {
 	ofVec2f ofs(100, 100);
 	
-	VboSet.set_vboVerts(0, ofs.x, ofs.y);
-	VboSet.set_vboVerts(1, ofs.x, ofs.y + SQUARE_H);
-	VboSet.set_vboVerts(2, ofs.x + SQUARE_W, ofs.y + SQUARE_H);
-	VboSet.set_vboVerts(3, ofs.x + SQUARE_W, ofs.y);
+	VboSet.set_vboVerts(0, ofs.x, ofs.y + SQUARE_H);
+	VboSet.set_vboVerts(1, ofs.x, ofs.y);
+	VboSet.set_vboVerts(2, ofs.x + SQUARE_W, ofs.y);
+	VboSet.set_vboVerts(3, ofs.x + SQUARE_W, ofs.y + SQUARE_H);
 }
 
 /******************************
@@ -58,6 +58,14 @@ void ofApp::Refresh_vboColor()
 	ofColor col(255, 255, 255, 255);
 	// ofColor col(255, 0, 0, 255); // textureの赤成分のみ抽出して表示
 	VboSet.set_singleColor(col);
+
+	// 頂点ごとに違う色をset.
+	/*
+	VboSet.set_vboColor(0, ofColor(255, 0, 0, 255));
+	VboSet.set_vboColor(1, ofColor(0, 255, 0, 255));
+	VboSet.set_vboColor(2, ofColor(0, 0, 255, 255));
+	VboSet.set_vboColor(3, ofColor(255, 255, 0, 255));
+	*/
 	
 	return;
 }
