@@ -36,9 +36,13 @@ private:
 	// vector<ofVec3f> VboVerts;
 	vector<glm::vec3> VboVerts;
 	vector<ofFloatColor> VboColor;
+	vector<glm::vec2> VboTexCoords;
 	
 public:
 	void setup(int size);
+	void setup(int size, ofImage& tex_img);
+	void setup_StaticTexture(ofImage& img);
+	
 	void set_vboVerts(int id, float _x, float _y, float _z = 0);
 	void set_vboColor(int id, const ofColor& color);
 	void set_singleColor(const ofColor& color);
