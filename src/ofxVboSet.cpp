@@ -7,50 +7,41 @@
 
 /******************************
 ******************************/
-void ofx__VBO_SET::setup(int size){
+void ofx__VBO_SET::setup(int size, bool _b_UseTexture){
+	/********************
+	********************/
+	b_UseTexture = _b_UseTexture;
+	
 	/********************
 	std::vectorのresizeとassignの違い (C++)
 		https://minus9d.hatenablog.com/entry/2021/02/07/175159
 	********************/
 	VboVerts.assign(size, ofVec3f(0, 0, 0)); // VboVerts.resize(size);
 	VboColor.resize(size);
-	
-	Vbo.setVertexData(&VboVerts[0], VboVerts.size(), GL_DYNAMIC_DRAW);
-	Vbo.setColorData(&VboColor[0], VboColor.size(), GL_DYNAMIC_DRAW);
-}
-
-/******************************
-******************************/
-void ofx__VBO_SET::setup(int size, ofImage& tex_img){
-	/********************
-	std::vectorのresizeとassignの違い (C++)
-		https://minus9d.hatenablog.com/entry/2021/02/07/175159
-	********************/
-	VboVerts.assign(size, ofVec3f(0, 0, 0)); // VboVerts.resize(size);
-	VboColor.resize(size);
-	
-	Vbo.setVertexData(&VboVerts[0], VboVerts.size(), GL_DYNAMIC_DRAW);
-	Vbo.setColorData(&VboColor[0], VboColor.size(), GL_DYNAMIC_DRAW);
+	if(b_UseTexture) VboTexCoords.resize(size);
 	
 	/********************
+	How to choose between GL_STREAM_DRAW or GL_DYNAMIC_DRAW?
+		https://stackoverflow.com/questions/8281653/how-to-choose-between-gl-stream-draw-or-gl-dynamic-draw
+		contents
+			STREAM
+				You should use STREAM_DRAW when the data store contents will be modified once and used at most a few times.
+			
+			STATIC
+				Use STATIC_DRAW when the data store contents will be modified once and used many times.
+			
+			DYNAMIC
+				Use DYNAMIC_DRAW when the data store contents will be modified repeatedly and used many times.
+			
+			The usage flag is a hint, not a enforcement. Or in other words: Things don't break if you use a "wrong" flag. 
+			So I suggest you try all 3: STATIC_DRAW, STREAM_DRAW and DYNAMIC_DRAW and choose the one that gives you best performance – and it's very likely that they will tie.
+		
+	■	GL_DYNAMIC_DRAW, GL_STATIC_DRAW, と言うのは、コンパイラに対する最適化のためのhintであって、「GL_STATIC_DRAW にしたら書き換えられない」と言う訳ではない。
+		「書き換えの頻度」に応じてusage flagを選択する。
 	********************/
-	setup_StaticTexture(tex_img);
-}
-
-/******************************
-座標軸
-	texture image上で、左上原点, 右に+x, 下に+y.
-******************************/
-void ofx__VBO_SET::setup_StaticTexture(ofImage& img){
-	VboTexCoords.resize(4);
-	
-	VboTexCoords[0] = glm::vec2(0, img.getHeight());
-	VboTexCoords[1] = glm::vec2(0, 0);
-	VboTexCoords[2] = glm::vec2(img.getWidth(), 0);
-	VboTexCoords[3] = glm::vec2(img.getWidth(), img.getHeight());
-	
-	Vbo.setTexCoordData(&VboTexCoords[0], VboTexCoords.size(), GL_STATIC_DRAW);
-	Vbo.updateTexCoordData(&VboTexCoords[0], VboTexCoords.size());
+	Vbo.setVertexData(&VboVerts[0], VboVerts.size(), GL_DYNAMIC_DRAW);
+	Vbo.setColorData(&VboColor[0], VboColor.size(), GL_DYNAMIC_DRAW);
+	if(b_UseTexture) Vbo.setTexCoordData(&VboTexCoords[0], VboTexCoords.size(), GL_STATIC_DRAW);
 }
 
 /******************************
@@ -103,6 +94,18 @@ void ofx__VBO_SET::setColor_perShape(int NumPerShape, int id, const ofColor& col
 }
 
 /******************************
+******************************/
+void ofx__VBO_SET::set_TexCoords(int id, float _x, float _y){
+	/********************
+	********************/
+	if(VboTexCoords.size() <= id) return;
+	
+	/********************
+	********************/
+	VboTexCoords[id] = glm::vec2(_x, _y);
+}
+
+/******************************
 description
 	CPU -> GPU
 ******************************/
@@ -125,6 +128,14 @@ description
 ******************************/
 void ofx__VBO_SET::update_color(){
 	Vbo.updateColorData(&VboColor[0], VboColor.size());
+}
+
+/******************************
+description
+	CPU -> GPU
+******************************/
+void ofx__VBO_SET::update_TexCoords(){
+	if(b_UseTexture) Vbo.updateTexCoordData(&VboTexCoords[0], VboTexCoords.size());
 }
 
 /******************************

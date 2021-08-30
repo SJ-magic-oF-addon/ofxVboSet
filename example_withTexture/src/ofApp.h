@@ -12,7 +12,12 @@
 class ofApp : public ofBaseApp{
 private:
 	enum{
-		NUM_PARTICLES = 4,
+		NUM_SQUARES = 2,
+		NUM_PARTICLES = NUM_SQUARES * 4,
+	};
+	enum{
+		WINDOW_W	= 1280,
+		WINDOW_H	= 720,
 	};
 	enum{
 		SQUARE_W = 500,
@@ -24,6 +29,7 @@ private:
 	
 	void Refresh_vboVerts();
 	void Refresh_vboColor();
+	void Refresh_vboTexCoords();
 	
 	
 public:

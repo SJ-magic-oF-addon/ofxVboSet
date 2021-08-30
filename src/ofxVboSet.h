@@ -38,18 +38,21 @@ private:
 	vector<ofFloatColor> VboColor;
 	vector<glm::vec2> VboTexCoords;
 	
+	bool b_UseTexture;
+	
 public:
-	void setup(int size);
-	void setup(int size, ofImage& tex_img);
-	void setup_StaticTexture(ofImage& img);
+	void setup(int size, bool _b_UseTexture = false);
 	
 	void set_vboVerts(int id, float _x, float _y, float _z = 0);
 	void set_vboColor(int id, const ofColor& color);
 	void set_singleColor(const ofColor& color);
 	void setColor_perShape(int NumPerShape, int id, const ofColor& color);
+	void set_TexCoords(int id, float _x, float _y);
+	
 	void update_vertex_color();
 	void update_vertex();
 	void update_color();
+	void update_TexCoords();
 
 	void draw(int drawMode);
 	void draw(int drawMode, int first, int total);
