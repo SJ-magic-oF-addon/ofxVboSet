@@ -59,6 +59,14 @@ void ofx__VBO_SET::set_vboVerts(int id, float _x, float _y, float _z){
 
 /******************************
 ******************************/
+void ofx__VBO_SET::shift_y_val_of_vboVerts(){
+	for(int i = 0; i < VboVerts.size() - 1; i++){
+		VboVerts[i].y = VboVerts[i + 1].y;
+	}
+}
+
+/******************************
+******************************/
 void ofx__VBO_SET::set_vboColor(int id, const ofColor& color){
 	/********************
 	********************/
